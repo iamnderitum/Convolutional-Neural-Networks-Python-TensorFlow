@@ -48,3 +48,24 @@ print('Shuffled Targets ===>> ', shuffled_targets)
 print('Shuffled Inputs: ')
 print(shuffled_inputs)
 
+sample_count = shuffled_inputs.shape[0]
+
+train_samples_count = int(0.8 * sample_count)
+validation_samples_count = int(0.1 * sample_count)
+test_samples_count = sample_count - train_samples_count - validation_samples_count
+#We have the sizes of the train, validation, and test. Lets extract them
+
+train_inputs = shuffled_inputs[:train_samples_count]
+train_targets = shuffled_targets[:train_samples_count]
+
+validation_inputs = shuffled_inputs[train_samples_count:train_samples_count + validation_samples_count]
+validation_targets = shuffled_targets[train_samples_count:train_samples_count + validation_samples_count]
+
+test_inputs = shuffled_inputs[train_samples_count + validation_samples_count:]
+test_targets = shuffled_targets[train_samples_count + validation_samples_count:]
+
+#ITS USEFUL TO CHECK IF WE HAVE BALANCED THE DATASET (Should be as close to 50% as possible)
+print(np.sum(train_targets), train_samples_count, np.sum(train_targets) / train_samples_count)
+print(np.sum(validation_targets), validation_samples_count, np.sum(validation_targets) / validation_samples_count)
+print(np.sum(test_targets), test_samples_count, np.sum(test_targets) / test_samples_count)
+
