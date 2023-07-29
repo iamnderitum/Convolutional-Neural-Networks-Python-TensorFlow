@@ -69,3 +69,6 @@ print(np.sum(train_targets), train_samples_count, np.sum(train_targets) / train_
 print(np.sum(validation_targets), validation_samples_count, np.sum(validation_targets) / validation_samples_count)
 print(np.sum(test_targets), test_samples_count, np.sum(test_targets) / test_samples_count)
 
+np.savez('Audiobook_data_train', inputs = train_inputs, targets = train_targets)
+np.savez('Audiobook_data_validation', inputs = validation_inputs, targets = validation_targets)
+np.savez('Audiobook_data_test', inputs = test_inputs, targets = test_targets)
