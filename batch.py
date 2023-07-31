@@ -44,3 +44,52 @@ class Audiobooks_Data_Reader():
         return self.batch_count
     
         
+import tensorflow as tf
+import numpy as np
+
+input_size = 10
+output_size = 2
+hidden_layer_size = 50
+
+# Create the model using the Keras API
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(hidden_layer_size, activation='relu', input_shape=(input_size,)),
+    tf.keras.layers.Dense(hidden_layer_size, activation='relu'),
+    tf.keras.layers.Dense(output_size)
+])
+
+# Define the optimizer and loss function
+optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+
+# Compile the model
+model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+batch_size = 100
+max_epochs = 15
+
+
+# Assuming you have your data loaded into 'train_inputs' and 'train_targets'.
+# Assuming 'Audiobook_Data_Reader' class is defined and loads the data batches.
+train_data = Audiobooks_Data_Reader('train', batch_size)
+validation_data = Audiobooks_Data_Reader('validation')
+
+for epoch in range(max_epochs):
+    for batch_inputs, batch_targets in train_data:
+        model.train_on_batch(batch_inputs, batch_targets)
+
+    # Calculate validation loss and accuracy after each epoch (if validation data available)
+    val_loss, val_accuracy = 0.0, 0.0
+    for val_batch_inputs, val_batch_targets in validation_data:
+        loss, accuracy = model.evaluate(val_batch_inputs, val_batch_targets, verbose=0)
+        val_loss += loss
+        val_accuracy += accuracy
+
+    val_loss /= len(validation_data)
+    val_accuracy /= len(validation_data)
+
+    print(f"Epoch {epoch + 1}/{max_epochs}, Validation Loss: {val_loss}, Validation Accuracy: {val_accuracy}")
+
+    # Add any early stopping or checkpoint saving logic based on validation performance
+
+# To make predictions, you can use:
+# predictions = model.predict(test_inputs)
